@@ -98,27 +98,27 @@ public class Main {
 
                 switch (opcao) {
                     case 1 -> {
-                        valorConvertido = valor * ConversorMoedas.getARS();
+                        valorConvertido = valor * ConversorMoedas.getArs();
                         System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Argentino é de $" + valorConvertido);
                     }
                     case 2 -> {
-                        valorConvertido = valor / ConversorMoedas.getARS();
+                        valorConvertido = valor / ConversorMoedas.getArs();
                         System.out.println("O valor do Peso Argentino de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
                     }
                     case 3 -> {
-                        valorConvertido = valor * ConversorMoedas.getCOP();
+                        valorConvertido = valor * ConversorMoedas.getCop();
                         System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Colombiano é de $" + valorConvertido);
                     }
                     case 4 -> {
-                        valorConvertido = valor / ConversorMoedas.getCOP();
+                        valorConvertido = valor / ConversorMoedas.getCop();
                         System.out.println("O valor do Peso Colombiano de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
                     }
                     case 5 -> {
-                        valorConvertido = valor * ConversorMoedas.getBRL();
+                        valorConvertido = valor * ConversorMoedas.getBrl();
                         System.out.println("O valor em Dólar de US$" + valor + " convertido para Real Brasileiro é de R$" + valorConvertido);
                     }
                     case 6 -> {
-                        valorConvertido = valor / ConversorMoedas.getBRL();
+                        valorConvertido = valor / ConversorMoedas.getBrl();
                         System.out.println("O valor do Real Brasileiro de R$" + valor + " convertido para Dólar é de US$" + valorConvertido);
                     }
                     default -> System.out.println("Opção inválida!");
