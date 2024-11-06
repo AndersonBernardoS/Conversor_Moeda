@@ -1,11 +1,10 @@
 package br.com.conversor.principal;
 
 import br.com.conversor.objetos.ConversorMoedas;
-import br.com.conversor.records.MoedaAPI;
+import br.com.conversor.records.MoedaAPIold;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -42,9 +41,13 @@ public class Main {
                     6) Real Brasileiro -> Dólar
                     
                     7) SAIR
+                    
+                    Digite sua opção abaixo:
                     ------------------------------------------------------------
                     """);
             opcao = leitura.nextInt();
+            if (opcao == 7) break;
+
             System.out.println("Agora digite o valor a ser convertido: ");
             valor = leitura.nextDouble();
 
@@ -57,39 +60,68 @@ public class Main {
                         .send(request, HttpResponse.BodyHandlers.ofString());
 
                 String json = response.body();
-                //System.out.println(json);
+                System.out.println(json);
 
-                MoedaAPI moeda = gson.fromJson(json, MoedaAPI.class);
-                //System.out.println(moeda);
+                MoedaAPIold moeda = gson.fromJson(json, MoedaAPIold.class);
+                if (moeda.conversion_rates() == null) {
+                    System.out.println("Erro: As taxas de conversão não foram carregadas corretamente.");
+                    return;
+                }
+                System.out.println("Data da cotação do dólar: " + moeda.time_last_update_utc());
 
-                ConversorMoedas myTitle = new ConversorMoedas(moeda);
-                //System.out.println(myTitle);
-
-                if (opcao == 1) {
-                    valorConvertido = valor * moeda.ARS();
-                    System.out.println("O valor em Dólar de US$"+valor+" convertido para Peso Argentino é de $"+valorConvertido);
+                /*if (opcao == 1) {
+                    valorConvertido = valor * moeda.conversion_rates().ARS();
+                    System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Argentino é de $" + valorConvertido);
                 }
                 if (opcao == 2) {
-                    valorConvertido = valor / moeda.ARS();
-                    System.out.println("O valor do Peso Argentino de $"+valor+" convertido para Dólar é de US$"+valorConvertido);
+                    valorConvertido = valor / moeda.conversion_rates().ARS();
+                    System.out.println("O valor do Peso Argentino de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
                 }
 
                 if (opcao == 3) {
-                    valorConvertido = valor * moeda.COP();
-                    System.out.println("O valor em Dólar de US$"+valor+" convertido para Peso Colombiano é de $"+valorConvertido);
+                    valorConvertido = valor * moeda.conversion_rates().COP();
+                    System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Colombiano é de $" + valorConvertido);
                 }
                 if (opcao == 2) {
-                    valorConvertido = valor / moeda.COP();
-                    System.out.println("O valor do Peso Colombiano de $"+valor+" convertido para Dólar é de US$"+valorConvertido);
+                    valorConvertido = valor / moeda.conversion_rates().COP();
+                    System.out.println("O valor do Peso Colombiano de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
                 }
 
                 if (opcao == 3) {
-                    valorConvertido = valor * moeda.BRL();
-                    System.out.println("O valor em Dólar de US$"+valor+" convertido para Real Brasileiro é de R$"+valorConvertido);
+                    valorConvertido = valor * moeda.conversion_rates().BRL();
+                    System.out.println("O valor em Dólar de US$" + valor + " convertido para Real Brasileiro é de R$" + valorConvertido);
                 }
                 if (opcao == 4) {
-                    valorConvertido = valor / moeda.BRL();
-                    System.out.println("O valor do Real Brasileiro de R$"+valor+" convertido para Dólar é de US$"+valorConvertido);
+                    valorConvertido = valor / moeda.conversion_rates().BRL();
+                    System.out.println("O valor do Real Brasileiro de R$" + valor + " convertido para Dólar é de US$" + valorConvertido);
+                }*/
+
+                switch (opcao) {
+                    case 1 -> {
+                        valorConvertido = valor * ConversorMoedas.getARS();
+                        System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Argentino é de $" + valorConvertido);
+                    }
+                    case 2 -> {
+                        valorConvertido = valor / ConversorMoedas.getARS();
+                        System.out.println("O valor do Peso Argentino de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
+                    }
+                    case 3 -> {
+                        valorConvertido = valor * ConversorMoedas.getCOP();
+                        System.out.println("O valor em Dólar de US$" + valor + " convertido para Peso Colombiano é de $" + valorConvertido);
+                    }
+                    case 4 -> {
+                        valorConvertido = valor / ConversorMoedas.getCOP();
+                        System.out.println("O valor do Peso Colombiano de $" + valor + " convertido para Dólar é de US$" + valorConvertido);
+                    }
+                    case 5 -> {
+                        valorConvertido = valor * ConversorMoedas.getBRL();
+                        System.out.println("O valor em Dólar de US$" + valor + " convertido para Real Brasileiro é de R$" + valorConvertido);
+                    }
+                    case 6 -> {
+                        valorConvertido = valor / ConversorMoedas.getBRL();
+                        System.out.println("O valor do Real Brasileiro de R$" + valor + " convertido para Dólar é de US$" + valorConvertido);
+                    }
+                    default -> System.out.println("Opção inválida!");
                 }
 
             } catch (NumberFormatException e) {
@@ -100,12 +132,14 @@ public class Main {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            } finally {
-                System.out.println("O programa finalizou!");
+            } catch (NullPointerException e) {
+                throw new RuntimeException(e);
+            }finally {
+                System.out.println("O programa finalizou corretamente!");
             }
 
         }
-        System.out.println("O programa finalizou corretamente!");
+        System.out.println("Você saiu e o programa finalizou corretamente!");
 
     }
 }
