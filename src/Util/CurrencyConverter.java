@@ -14,4 +14,3 @@ public class CurrencyConverter {
         return amount * rate;
     }
 }
-

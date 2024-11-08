@@ -44,16 +44,6 @@ public class Main {
             double valor = scanner.nextDouble();
             double valorConvertido = 0.0;
 
-            String targetCurrency = switch (opcao) {
-                case 1 -> "EUR";
-                case 2 -> "BRL";
-                case 3 -> "JPY";
-                case 4 -> "GBP";
-                case 5 -> "CAD";
-                case 6 -> "AUD";
-                default -> throw new IllegalStateException("Opção inválida.");
-            };
-
             try {
                 switch (opcao) {
                     case 1 -> {
